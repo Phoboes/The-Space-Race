@@ -1,0 +1,227 @@
+var app = app || {};
+
+app.createAliensLevelOne = function() {
+    app.$stylise();
+    for (var y = 0; y < 1; y++)
+    {
+
+            var alien = app.aliens.create(0, y * 100, 'invader');
+            alien.anchor.setTo(0.5, 0.5);
+            // alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
+            // alien.play('fly');
+            alien.body.moves = false;
+
+    }
+
+    app.aliens.x = 400;
+    app.aliens.y = -200;
+
+    app.game.time.events.loop(Phaser.Timer.SECOND * .01, app.descendLevelOne, this);
+
+    app.levelSevenLoop.stop()
+    app.levelEightLoop.stop()
+    app.levelNineLoop.stop()
+
+
+}
+
+app.setupInvaderLevelOne = function(invader) {
+
+
+    invader.anchor.x = 0.45;
+    invader.anchor.y = 0.5;
+    invader.animations.add('kaboom');
+
+}
+
+app.descendLevelOne = function() {
+
+    app.aliens.y += app.aliensVelocity;
+
+    _.each(app.aliens.children, function(alien) {
+        if (alien.world.y > app.game.world.bounds.bottom) {
+            alien.kill();
+        }
+    });
+
+}
+
+app.collisionHandlerLevelOne = function(bullet, alien) {
+    app.totalKillCount += 1;
+
+
+    //  When a bullet hits an alien we kill them both
+    bullet.kill();
+    alien.kill();
+
+    //AUDIO enemy is hit by bullet -K
+
+    app.soundCall = new Howl({
+    urls: [app.playSound("enemyHit")]
+    }).play();
+
+    //  Increase the score
+    app.score += 20;
+    app.scoreText.text = app.scoreString + app.score;
+
+    //  And create an explosion :)
+    var explosion = app.explosions.getFirstExists(false);
+    explosion.reset(alien.body.x, alien.body.y);
+    explosion.play('kaboom', 30, false, true);
+
+
+}
+
+app.enemyHitsPlayerLevelOne = function(player,bullet) {
+
+
+    bullet.kill();
+
+    //AUDIO Player is hit sound
+    app.playPlayerIsHit();
+
+
+    live = app.lives.getFirstAlive();
+
+    if (live)
+    {
+        live.kill();
+    }
+
+    //  And create an explosion :)
+    var explosion = app.explosions.getFirstExists(false);
+    explosion.reset(app.player.body.x, app.player.body.y);
+
+    // Play explosion based on asteroid texture. Pretend that the bullet variable is called alien, that might make things clearer...
+    if (app.levelCounter === 7) {
+        if (bullet.texture.baseTexture.source.name === "levelSevenAsteroidLarge") {
+            explosion.loadTexture( "levelSevenBigExplode" + (bullet.frame + 1) );
+        }
+        else if (bullet.texture.baseTexture.source.name === "levelSevenAsteroid") {
+            explosion.loadTexture( "levelSevenExplode" + (bullet.frame + 1) );
+        }
+        else {
+            explosion.loadTexture( "levelSevenSmallExplode" + (bullet.frame + 1) );
+        }
+    }
+
+    explosion.play('kaboom', 30, false, true);
+
+    // When the player dies
+    if (app.lives.countLiving() < 1 && app.godMode === false)
+    {
+        app.player.kill();
+        app.enemyBullets.callAll('kill');
+
+
+
+        if ( app.levelCounter > 5 ){
+            app.stateText.text="  GAME OVER \n Press space \n to  restart";
+            app.stateText.visible = true;
+            app.stateText.fill = '#fff';
+        }
+
+        app.stateText.text="  GAME OVER \n Press space \n to  restart";
+        app.stateText.visible = true;
+
+        //the "press space to restart" handler
+
+        app.canFire = false;
+
+        app.fireButton.onDown.addOnce(app.restart, this);
+
+        var checkSpacePress = setInterval(function() {
+            if (app.fireButton.isDown) {
+                  clearInterval(checkSpacePress);
+                  checkSpacePress = 0;
+
+                  setTimeout(function() {
+                    app.canFire = true;
+                  }, 1000);
+            }
+
+        }, 100);
+
+        //AUDIO - Game over -k
+        app.playGameOverSound();
+    }
+
+}
+
+
+app.enemyFiresLevelOne = function() {
+
+    //  Grab the first bullet we can from the pool
+    app.enemyBullet = app.enemyBullets.getFirstExists(false);
+
+    app.livingEnemies.length = 0;
+
+    app.aliens.forEachAlive(function(alien){
+
+        // put every living enemy in an array
+        app.livingEnemies.push(alien);
+    });
+
+
+    if (app.enemyBullet && app.livingEnemies.length > 0)
+    {
+
+        var random=app.game.rnd.integerInRange(0,app.livingEnemies.length-1);
+
+        // randomly select one of them
+        var shooter=app.livingEnemies[random];
+        // And fire the bullet from this enemy
+        app.enemyBullet.reset(shooter.body.x, shooter.body.y);
+
+        app.game.physics.arcade.moveToObject(app.enemyBullet,app.player,120);
+        app.firingTimer = app.game.time.now + 2000;
+    }
+
+}
+
+
+app.fireBulletLevelOne = function() {
+
+    //  To avoid them being allowed to fire too fast we set a time limit
+    if (app.game.time.now > app.bulletTime)
+    {
+        //  Grab the first bullet we can from the pool
+        var bullet = app.bullets.getFirstExists(false);
+
+        if (bullet)
+        {
+            //  And fire it
+            bullet.reset(app.player.x, app.player.y);
+
+            if (app.levelCounter <= 4) {
+                bullet.body.velocity.y = -app.bulletVelocity;
+            }
+
+            if (app.levelCounter > 4) {
+                app.bulletVelocity = 400;
+            }
+
+            if (app.levelCounter === 5) {
+                app.levelFiveBulletDirection(bullet);
+            }
+
+            if (app.levelCounter >= 6) {
+                app.levelSixBulletDirection(bullet);
+            }
+
+            if (app.levelCounter === 7) {
+                bullet.loadTexture("levelSevenBullet", 0, false);
+                bullet.animations.add('colour', [ 0, 1, 2, 3, 4 ], 20, true);
+                bullet.frame = _.random(0,4);
+            }
+
+            app.bulletTime = app.game.time.now + app.bulletFireRate;
+
+            //AUDIO Player shooting bullets -k
+            app.playerShotSound();
+        }
+    }
+
+}
+
+

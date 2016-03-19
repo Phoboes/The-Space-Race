@@ -1,0 +1,328 @@
+var app = app || {};
+
+app.createLevelSeven = function() {
+    app.starfield.loadTexture("levelSixBackground", 0, false);
+    app.player.loadTexture("levelSevenShip", 0, false);
+    app.player.animations.add('fly', [0, 1, 2]);
+
+    app.aliensSpawnTime = 22500;
+    app.aliensVelocity = 3;
+    app.createAliensLevelSeven();
+    app.stateText.visible = false;
+    app.levelCounter++;
+    app.$stylise();
+    app.game.time.events.events.pop();
+    app.game.time.events.loop(Phaser.Timer.SECOND * .02, app.descendLevelFourSmallAliens, this);
+
+    // app.preloadLevelSeven();
+
+    app.levelSevenLoop = new Howl({
+    urls: [app.playSound("level7music")],
+    autoplay: true,
+    loop: true,
+    volume: 0
+    })
+
+app.levelSevenLoop.fade(0, 0.5, 15000)
+
+}
+
+app.createAlienGroupTopBottomLevelSeven = function(x, y, num, alienMove) {
+
+    var alienArray = [];
+
+    for (var i = 0; i < num; i++) {
+        var alien;
+        if (i % 2 === 0) {
+            alien = app.aliens.create(_.random(0, x), y, 'levelSevenAsteroid');
+        }
+        else {
+            alien = app.aliens.create(_.random(0, x), y, 'levelSevenAsteroidLarge');
+
+        }
+
+        alien.animations.add('colour', [ 0, 1, 2, 3, 4 ], 20, true);
+        alien.frame = _.random(0,4);
+
+        alien.anchor.setTo(0.5, 0.5);
+        alien.body.moves = false;
+        alienArray.push(alien);
+    }
+
+    _.each(alienArray, function(alien){
+
+        setTimeout(function() {
+            app.game.time.events.loop(Phaser.Timer.SECOND * .01, alienMove, this, alien);
+        }, _.random(1000, app.aliensSpawnTime) );
+
+    });
+
+}
+
+app.createAlienGroupLeftRightLevelSeven = function(x, y, num, alienMove) {
+
+    var alienArray = [];
+
+    for (var i = 0; i < num; i++) {
+        var alien;
+        if (i % 2 === 0) {
+            alien = app.aliens.create(x, _.random(0, y), 'levelSevenAsteroid');
+        }
+
+        else {
+            alien = app.aliens.create(x, _.random(0, y), 'levelSevenAsteroidLarge');
+        }
+
+        alien.animations.add('colour', [ 0, 1, 2, 3, 4 ], 20, true);
+        alien.frame = _.random(0,4);
+
+        alien.anchor.setTo(0.5, 0.5);
+        alien.body.moves = false;
+        alienArray.push(alien);
+    }
+
+    _.each(alienArray, function(alien){
+
+        setTimeout(function() {
+            app.game.time.events.loop(Phaser.Timer.SECOND * .01, alienMove, this, alien);
+        }, _.random(1000, app.aliensSpawnTime) );
+
+    });
+
+}
+
+app.createAliensLevelSeven = function() {
+
+    // Reset aliens position
+    app.aliens.x = 0;
+    app.aliens.y = 0;
+
+    asteroidNum = 120;
+    num = asteroidNum / 4;
+
+    // Asteroid group moving from top to bottom
+    app.createAlienGroupTopBottomLevelSeven(800, -300, num, app.descendLevelFour);
+
+    // Asteroid group moving from bottom to top
+    app.createAlienGroupTopBottomLevelSeven(800, 950, num, app.ascendLevelFive);
+
+    // Asteroid group moving from left to right
+    app.createAlienGroupLeftRightLevelSeven(-300, 650, num, app.moveRightLevelFour);
+
+    // Asteroid group moving from right to left
+    app.createAlienGroupLeftRightLevelSeven(1200, 650, num, app.moveLeftLevelFour);
+
+}
+
+app.collisionHandlerLevelSeven = function(bullet, alien) {
+    if ( app.areAliensImage(alien) === true ){
+        app.loggingPositionsLvlSeven(alien);
+    };
+
+
+    app.totalKillCount += 1;
+
+
+    //  When a bullet hits an alien we kill them both
+    bullet.kill();
+    alien.kill();
+
+    //AUDIO enemy is hit by bullet -K
+
+    app.soundCall = new Howl({
+    urls: [app.playSound("bassrumbleexplode")]
+    }).play();
+
+    //  Increase the score
+    app.score += 20;
+    app.scoreText.text = app.scoreString + app.score;
+
+    //  And create an explosion :)
+    var explosion = app.explosions.getFirstExists(false);
+    explosion.reset(alien.body.x, alien.body.y);
+
+    if (app.levelCounter === 7) {
+        if (alien.texture.baseTexture.source.name === "levelSevenAsteroidLarge") {
+            explosion.loadTexture( "levelSevenBigExplode" + (alien.frame + 1) );
+        }
+        else if (alien.texture.baseTexture.source.name === "levelSevenAsteroid") {
+            explosion.loadTexture( "levelSevenExplode" + (alien.frame + 1) );
+        }
+        else if (alien.texture.baseTexture.source.name === "levelSevenAsteroidSmall") {
+            explosion.loadTexture( "levelSevenSmallExplode" + (alien.frame + 1) );
+        }
+        else {
+            explosion.loadTexture("levelSixKaboom");
+        }
+    }
+
+    explosion.play('kaboom', 30, false, true);
+
+}
+
+app.collisionHandlerLevelSevenSmall = function(bullet, alien) {
+
+    app.totalKillCount += 1;
+
+
+    //  When a bullet hits an alien we kill them both
+    bullet.kill();
+    alien.kill();
+
+    //AUDIO enemy is hit by bullet -K
+
+    app.soundCall = new Howl({
+    urls: [app.playSound("bassrumbleexplode")]
+    }).play();
+
+    //  Increase the score
+    app.score += 20;
+    app.scoreText.text = app.scoreString + app.score;
+
+    //  And create an explosion :)
+    var explosion = app.explosions.getFirstExists(false);
+    explosion.reset(alien.body.x, alien.body.y);
+    explosion.loadTexture( "levelSevenSmallExplode" + (alien.frame + 1) );
+    explosion.play('kaboom', 30, false, true);
+
+
+}
+
+
+app.loggingPositionsLvlSeven = function(alien){
+    var prevPosX = alien.previousPosition.x
+    var prevPosY = alien.previousPosition.y
+    var currentPosX = alien.worldPosition.x
+    var currentPosY = alien.worldPosition.y
+
+    if ( prevPosX === currentPosX ){
+        if ( (prevPosY < currentPosY) && ( app.aliens.children )) {
+            app.smallAsteroidSpawnLvlFour(app.smallAliensDown, app.smallAlienGroupCounter);
+            app.createSmallDownLevelSeven(alien);
+        }
+        if ( currentPosY < prevPosY ){
+            app.smallAsteroidSpawnLvlFour(app.smallAliensUp, app.smallAlienGroupCounter);
+            app.createSmallUpLevelSeven(alien);
+        }
+    }
+
+    if ( prevPosY === currentPosY ) {
+        if(prevPosX > currentPosX){
+            app.smallAsteroidSpawnLvlFour(app.smallAliensLeft, app.smallAlienGroupCounter);
+            app.createSmallLeftLevelSeven(alien);
+        }
+        if(currentPosX > prevPosX){
+             app.smallAsteroidSpawnLvlFour(app.smallAliensRight, app.smallAlienGroupCounter);
+            app.createSmallRightLevelSeven(alien);
+        }
+    }
+
+};
+
+
+app.createSmallRightLevelSeven = function(lastAlien) {
+
+    var currentXPos = lastAlien.previousPosition.x
+    var currentYPos = lastAlien.previousPosition.y
+    var alienName = _.last(app.smallAliensRight);
+    var alienIndex = app.smallAliensRight.indexOf(alienName);
+    var alienInfo = app.game.add.group();
+        alienInfo.enableBody = true;
+        alienInfo.physicsBodyType = Phaser.Physics.ARCADE;
+        app.smallAliensRight[ alienIndex ] = alienInfo;
+
+    for (var y = 0; y < 1; y++)
+    {
+        for (var x = 0; x < 2; x++)
+        {
+            var alien = alienInfo.create(x * 50, 0, 'levelSevenAsteroidSmall');
+            alien.animations.add('colour', [ 0, 1, 2, 3, 4 ], 20, true);
+            alien.frame = _.random(0,4);
+        }
+    }
+    alienInfo.x = currentXPos - 40;
+    alienInfo.y = currentYPos;
+
+}
+
+app.createSmallLeftLevelSeven = function(lastAlien) {
+
+    var currentXPos = lastAlien.previousPosition.x
+    var currentYPos = lastAlien.previousPosition.y
+    var alienName = _.last(app.smallAliensLeft);
+    var alienIndex = app.smallAliensLeft.indexOf(alienName);
+    var alienInfo = app.game.add.group();
+        alienInfo.enableBody = true;
+        alienInfo.physicsBodyType = Phaser.Physics.ARCADE;
+        app.smallAliensLeft[ alienIndex ] = alienInfo;
+
+    for (var y = 0; y < 1; y++)
+    {
+        for (var x = 0; x < 2; x++)
+        {
+            var alien = alienInfo.create(x * 50, 0, 'levelSevenAsteroidSmall');
+            alien.animations.add('colour', [ 0, 1, 2, 3, 4 ], 20, true);
+            alien.frame = _.random(0,4);
+        }
+    }
+    alienInfo.x = currentXPos - 40;
+    alienInfo.y = currentYPos;
+}
+
+app.createSmallDownLevelSeven = function(lastAlien) {
+
+    var currentXPos = lastAlien.previousPosition.x
+    var currentYPos = lastAlien.previousPosition.y
+    var alienName = _.last(app.smallAliensDown);
+    var alienIndex = app.smallAliensDown.indexOf(alienName);
+    var alienInfo = app.game.add.group();
+        alienInfo.enableBody = true;
+        alienInfo.physicsBodyType = Phaser.Physics.ARCADE;
+        app.smallAliensDown[ alienIndex ] = alienInfo;
+
+    for (var y = 0; y < 1; y++)
+    {
+        for (var x = 0; x < 2; x++)
+        {
+            var alien = alienInfo.create(x * 50, 0, 'levelSevenAsteroidSmall');
+            alien.animations.add('colour', [ 0, 1, 2, 3, 4 ], 20, true);
+            alien.frame = _.random(0,4);
+        }
+    }
+    alienInfo.x = currentXPos - 40;
+    alienInfo.y = currentYPos;
+
+
+
+}
+
+app.createSmallUpLevelSeven = function(lastAlien) {
+
+    var currentXPos = lastAlien.previousPosition.x
+    var currentYPos = lastAlien.previousPosition.y
+    var alienName = _.last(app.smallAliensUp);
+    var alienIndex = app.smallAliensUp.indexOf(alienName);
+    var alienInfo = app.game.add.group();
+        alienInfo.enableBody = true;
+        alienInfo.physicsBodyType = Phaser.Physics.ARCADE;
+        app.smallAliensUp[ alienIndex ] = alienInfo;
+
+    for (var y = 0; y < 1; y++)
+    {
+        for (var x = 0; x < 2; x++)
+        {
+            var alien = alienInfo.create(x * 50, 0, 'levelSevenAsteroidSmall');
+            alien.animations.add('colour', [ 0, 1, 2, 3, 4 ], 20, true);
+            alien.frame = _.random(0,4);
+        }
+    }
+    alienInfo.x = currentXPos - 40;
+    alienInfo.y = currentYPos;
+
+}
+
+app.preloadLevelEight = function(){
+
+    app.game.load.start();
+
+};

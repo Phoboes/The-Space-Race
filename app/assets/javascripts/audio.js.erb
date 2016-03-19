@@ -1,0 +1,159 @@
+
+app.soundCall = new Howl({})
+app.levelSevenLoop = new Howl({})
+app.levelEightLoop = new Howl({})
+app.levelNineLoop = new Howl({})
+
+app.playSound = function(play){
+  switch (play){
+
+// -----------Player is hit----------
+
+    case "playerHit":
+    return '<%= asset_path("playerHit.wav") %>'
+
+
+// -----------Player shots----------
+
+// Level 1 -> 5 
+    case "playerShot":
+    return '<%= asset_path("playerShot.wav") %>'
+
+// Level 6
+    case "babypew":
+    return '<%= asset_path("babypew.wav") %>'
+
+// Level 7
+    case "pew":
+    return '<%= asset_path("pew.wav") %>'
+
+// Level 8
+    case "shortplayershot8":
+    return '<%= asset_path("shortplayershot8.wav") %>'
+
+// Level 9
+    case "laserpew":
+    return '<%= asset_path("laserpew.wav") %>'
+
+
+
+// Unused
+
+    case "playershotpew":
+    return '<%= asset_path("playershotpew.wav") %>'
+
+    case "8bitexplosion":
+    return '<%= asset_path("8bitexplosion.wav") %>'
+
+
+// -----------Alien explosions/Deaths----------
+
+
+// Level 6 & 7
+    case "bassrumbleexplode":
+    return '<%= asset_path("bassrumbleexplode.wav") %>'
+
+// Level 8
+    case "missile":
+    return '<%= asset_path("missile.wav") %>'
+
+// Level 9
+    case "enemyHit":
+    return '<%= asset_path("enemyHit.wav") %>'
+
+// ------ Upgrade transition sound to 7 -> 8 ---- //
+
+    case "8bitupgrade":
+    return '<%= asset_path("8bitupgrade.wav") %>'
+
+// -----------MUSIC----------
+
+    case "level7music":
+    return '<%= asset_path("level7music.mp3") %>'
+
+    case "level8music":
+    return '<%= asset_path("level8music.wav") %>'
+
+    case "level9music":
+    return '<%= asset_path("level9music.wav") %>'
+
+// -----------Game Over audio----------
+
+    case "gameOver":
+    return '<%= asset_path("gameOver.wav") %>'
+
+    case "gameover8":
+    return '<%= asset_path("gameover8.wav") %>'
+
+    case "pacmandeath":
+    return '<%= asset_path("pacmandeath.wav") %>'
+
+  }
+
+}
+
+
+// Player has shot a bullet.
+
+app.playerShotSound = function(){
+    //AUDIO Player PEWPEWPEW sounds etc. -K
+
+    if (app.levelCounter <= 5){
+        app.soundCall = new Howl({
+        volume: 0.5,
+        urls: [app.playSound("playerShot")]
+        }).play();
+
+    } else if (app.levelCounter === 6){
+        app.soundCall = new Howl({
+        urls: [app.playSound("babypew")]
+        }).play();
+
+    } else if (app.levelCounter === 7){
+        app.soundCall = new Howl({
+        volume: 0.5,
+        urls: [app.playSound("pew")]
+        }).play();
+
+    } else if (app.levelCounter === 8){
+        app.soundCall = new Howl({
+        volume: 0.5,
+        urls: [app.playSound("shortplayershot8")]
+        }).play();
+
+    } else if (app.levelCounter >= 8){
+        app.soundCall = new Howl({
+        volume: 0.5,
+        urls: [app.playSound("laserpew")]
+        }).play();
+
+    }
+
+}
+
+// Player dies
+
+app.playGameOverSound = function(){
+        if(app.levelCounter < 7){
+        app.soundCall = new Howl({
+        urls: [app.playSound("gameOver")]
+        }).play();
+    } else if (app.levelCounter === 7){
+        app.soundCall = new Howl({
+        urls: [app.playSound("pacmandeath")]
+        }).play();
+    } else if (app.levelCounter > 7){
+        app.soundCall = new Howl({
+        urls: [app.playSound("gameover8")]
+        }).play();
+    }
+}
+
+// Player takes a hit
+
+app.playPlayerIsHit = function(){
+    app.soundCall = new Howl({
+    volume: 0.5,
+    urls: [app.playSound("playerHit")]
+    }).play();
+}

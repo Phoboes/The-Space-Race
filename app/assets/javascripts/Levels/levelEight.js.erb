@@ -1,0 +1,166 @@
+var app = app || {};
+
+app.createLevelEight = function() {
+    app.starfield.loadTexture("levelEightBackground", 0, false);
+    app.player.loadTexture("levelEightShip", 0, false);
+    app.player.animations.add('fly', [0, 1, 2]);
+
+    _.each(app.bullets.children, function(bullet) {
+        bullet.loadTexture("levelEightBullet", 0, false);
+        bullet.animations.add('pulse', [0, 1]);
+        bullet.animations.play('pulse', 20, true);
+    });
+
+    _.each(app.explosions.children, function(explosion) {
+        explosion.loadTexture("levelEightKaboom", 0, false);
+    });
+
+    app.aliensVelocity = 2;
+    app.aliensSpawnTime = 20000;
+
+    app.createAliensLevelEight();
+    app.stateText.visible = false;
+    app.levelCounter ++;
+    // app.preloadLevelSeven();
+    app.$stylise();
+    app.soundCall = new Howl({
+    urls: [app.playSound("8bitupgrade")]
+    }).play();
+
+
+    app.levelEightLoop = new Howl({
+      urls: [app.playSound("level8music")],
+      autoplay: true,
+      loop: true,
+      volume: 0.0,
+      })
+
+    app.levelSevenLoop.fade(0.5, 0, 1800,function(){app.levelSevenLoop.stop()})
+    app.levelEightLoop.fade(0, 0.5, 2000)
+}
+
+
+app.createAlienGroupTopBottomLevelEight = function(x, y, num, alienMove) {
+
+    var alienArray = [];
+
+    for (var i = 0; i < num; i++) {
+
+        var alien = app.aliens.create(_.random(0, x), y, 'levelEightSeeker');
+        alien.anchor.setTo(0.5, 0.5);
+        alien.animations.add('fly', [ 0, 1, 2 ], 20, true);
+        alien.play('fly');
+        //alien.body.moves = false;
+        alienArray.push(alien);
+    }
+
+    _.each(alienArray, function(alien){
+
+        setTimeout(function() {
+            app.game.time.events.loop(Phaser.Timer.SECOND * .0166, function() {
+
+                app.game.physics.arcade.moveToObject(alien, app.player, _.random(120, 200) );
+
+                var r = app.game.physics.arcade.angleToXY(alien, app.player.position.x, app.player.position.y);
+
+                var d = r * (180 / Math.PI);
+
+                alien.angle = d + 90;
+
+            }, this);
+
+
+        }, _.random(1000, app.aliensSpawnTime) );
+    });
+}
+
+app.createAlienGroupLeftRightLevelEight = function(x, y, num, alienMove) {
+
+    var alienArray = [];
+
+    for (var i = 0; i < num; i++) {
+
+        var alien = app.aliens.create(x, _.random(0, y), 'levelEightSeeker');
+        alien.anchor.setTo(0.5, 0.5);
+        alien.animations.add('fly', [ 0, 1, 2 ], 20, true);
+        alien.play('fly');
+        //alien.body.moves = false;
+        alienArray.push(alien);
+    }
+
+    _.each(alienArray, function(alien){
+
+        setTimeout(function() {
+            app.game.time.events.loop(Phaser.Timer.SECOND * .0166, function() {
+
+                app.game.physics.arcade.moveToObject(alien, app.player, _.random(120, 200) );
+
+                var r = app.game.physics.arcade.angleToXY(alien, app.player.position.x, app.player.position.y);
+
+                var d = r * (180 / Math.PI);
+
+                alien.angle = d + 90;
+
+            }, this);
+
+        }, _.random(1000, app.aliensSpawnTime) );
+
+    });
+
+}
+
+app.createAliensLevelEight = function() {
+
+    // Reset aliens position
+    app.aliens.x = 0;
+    app.aliens.y = 0;
+
+    seekerNum = 20;
+    num = seekerNum / 4;
+
+    // Asteroid group moving from top to bottom
+    app.createAlienGroupTopBottomLevelEight(800, -300, num, app.descendLevelEight);
+
+    // Asteroid group moving from bottom to top
+    app.createAlienGroupTopBottomLevelEight(800, 950, num, app.ascendLevelEight);
+
+    // Asteroid group moving from left to right
+    app.createAlienGroupLeftRightLevelEight(-300, 650, num, app.moveRightLevelEight);
+
+    // Asteroid group moving from right to left
+    app.createAlienGroupLeftRightLevelEight(1200, 650, num, app.moveLeftLevelEight);
+
+}
+
+
+app.collisionHandlerLevelEight = function(bullet, alien) {
+
+    app.totalKillCount += 1;
+
+    //  When a bullet hits an alien we kill them both
+    bullet.kill();
+    alien.kill();
+
+    //AUDIO enemy is hit by bullet -K
+
+    app.soundCall = new Howl({
+    urls: [app.playSound("missile")]
+    }).play();
+
+    //  Increase the score
+    app.score += 20;
+    app.scoreText.text = app.scoreString + app.score;
+
+    //  And create an explosion :)
+    var explosion = app.explosions.getFirstExists(false);
+    explosion.reset(alien.body.x, alien.body.y);
+    explosion.play('kaboom', 30, false, true);
+
+}
+
+app.preloadLevelSeven = function(){
+
+    app.game.load.start();
+
+};
+

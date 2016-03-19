@@ -1,0 +1,136 @@
+var app = app || {};
+
+app.create = function() {
+
+    app.game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    //  The scrolling starfield background
+    app.starfield = app.game.add.tileSprite(0, 0, 800, 650, 'starfield');
+
+    //  Our bullet group
+    app.bullets = app.game.add.group();
+    app.bullets.enableBody = true;
+    app.bullets.physicsBodyType = Phaser.Physics.ARCADE;
+    app.bullets.createMultiple(30, 'bullet');
+    app.bullets.setAll('anchor.x', 0.5);
+    app.bullets.setAll('anchor.y', 1);
+    app.bullets.setAll('outOfBoundsKill', true);
+    app.bullets.setAll('checkWorldBounds', true);
+
+    // The enemy's bullets
+    app.enemyBullets = app.game.add.group();
+    app.enemyBullets.enableBody = true;
+    app.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
+    app.enemyBullets.createMultiple(100, 'enemyBullet');
+    app.enemyBullets.setAll('anchor.x', 0.5);
+    app.enemyBullets.setAll('anchor.y', 1);
+    app.enemyBullets.setAll('outOfBoundsKill', true);
+    app.enemyBullets.setAll('checkWorldBounds', true);
+
+    // alienShooterBullets
+
+    app.alienShooterBullets = app.game.add.group();
+    app.alienShooterBullets.enableBody = true;
+    app.alienShooterBullets.physicsBodyType = Phaser.Physics.ARCADE;
+    app.alienShooterBullets.createMultiple(300, 'levelTenBasicAlienBullet');
+    app.alienShooterBullets.setAll('anchor.x', 0.5);
+    app.alienShooterBullets.setAll('anchor.y', 1);
+    app.alienShooterBullets.setAll('outOfBoundsKill', true);
+    app.alienShooterBullets.setAll('checkWorldBounds', true);
+
+
+    // Alien Missile Bullets
+
+    app.alienMissileBullets = app.game.add.group();
+    app.alienMissileBullets.enableBody = true;
+    app.alienMissileBullets.physicsBodyType = Phaser.Physics.ARCADE;
+    app.alienMissileBullets.createMultiple(300, 'levelTenAlienMissile');
+    app.alienMissileBullets.setAll('anchor.x', 0.5);
+    app.alienMissileBullets.setAll('anchor.y', 0.5);
+    app.alienMissileBullets.setAll('outOfBoundsKill', true);
+    app.alienMissileBullets.setAll('checkWorldBounds', true);
+
+     // Alien Shotgun Bullets
+
+    app.alienShotgunBullets = app.game.add.group();
+    app.alienShotgunBullets.enableBody = true;
+    app.alienShotgunBullets.physicsBodyType = Phaser.Physics.ARCADE;
+    app.alienShotgunBullets.createMultiple(300, 'levelTenAlienShotgun');
+    app.alienShotgunBullets.setAll('anchor.x', 0.5);
+    app.alienShotgunBullets.setAll('anchor.y', 1);
+    app.alienShotgunBullets.setAll('outOfBoundsKill', true);
+    app.alienShotgunBullets.setAll('checkWorldBounds', true);
+
+    //  The hero!
+    app.player = app.game.add.sprite(400, 600, 'ship');
+    app.player.anchor.setTo(0.5, 0.5);
+    app.game.physics.enable(app.player, Phaser.Physics.ARCADE);
+    app.player.body.collideWorldBounds = true;
+
+    //  The baddies!
+    app.aliens = app.game.add.group();
+    app.aliens.enableBody = true;
+    app.aliens.physicsBodyType = Phaser.Physics.ARCADE;
+
+
+    //  SEEKER GROUP -K
+    app.seekerAlien = app.game.add.group();
+    app.seekerAlien.enableBody = true;
+    app.seekerAlien.physicsBodyType = Phaser.Physics.ARCADE;
+
+    //Shooter Group
+    app.alienShooter = app.game.add.group();
+    app.alienShooter.enableBody = true;
+    app.alienShooter.physicsBodyType = Phaser.Physics.ARCADE;
+
+    //Missile Group
+    app.alienMissileShip = app.game.add.group();
+    app.alienMissileShip.enableBody = true;
+    app.alienMissileShip.physicsBodyType = Phaser.Physics.ARCADE;
+
+    //Shotgun group
+    app.alienShotgunner = app.game.add.group();
+    app.alienShotgunner.enableBody = true;
+    app.alienShotgunner.physicsBodyType = Phaser.Physics.ARCADE;
+
+    app.createAliensLevelOne();
+
+
+    // ADDED TRANSPARENCY TO REMOVE FROM VIEW BUT LEAVE ACCESS TO DATA. -KANE
+    // //  The score
+    app.scoreString = 'Score : ';
+    app.scoreText = app.game.add.text(10, 705, app.scoreString + app.score, { font: '25px Georgia', fill: 'transparent' });
+
+    // //  Lives
+    app.lives = app.game.add.group();
+    app.game.add.text(app.game.world.width - 200, 705, 'Lives : ', { font: '25px Georgia', fill: 'transparent' });
+
+    //  Text -- THE FUNCTIONS IN FONTS HERE CAN BE FOUND IN GUI - THEY EVALUATE THE LEVEL AND PASS RETURN VALUES BASED ON IT. -KANE
+    app.stateText = app.game.add.text(app.game.world.centerX,app.game.world.centerY,' ', { font: '84px '+ gameLevelFontSelect() , fill: gameLevelFontColor() });
+    app.stateText.anchor.setTo(0.5, 0.5);
+    app.stateText.visible = false;
+
+    app.smallStateText = app.game.add.text(app.game.world.centerX,app.game.world.centerY,' ', { font: '30px '+ gameLevelFontSelect() , fill: gameLevelFontColor() });
+    app.smallStateText.anchor.setTo(0.5, 0.5);
+    app.smallStateText.visible = false;
+
+
+    // SHIP LIVES GRAPHIC CHANGED TO RENDER OUT OF GAME WORLD BOUNDS AND MADE TRANSPARENT -ALEX
+    for (var i = 0; i < 3; i++)
+    {
+        var ship = app.lives.create(app.game.world.width - 100 + (30 * i), 720, 'ship');
+        ship.anchor.setTo(0.5, 0.5);
+        ship.angle = 90;
+        ship.alpha = 0;
+    }
+
+    //  An explosion pool
+    app.explosions = app.game.add.group();
+    app.explosions.createMultiple(30, 'kaboom');
+    app.explosions.forEach(app.setupInvaderLevelOne, this);
+
+    //  And some controls to play the game with
+    app.cursors = app.game.input.keyboard.createCursorKeys();
+    app.fireButton = app.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+}
