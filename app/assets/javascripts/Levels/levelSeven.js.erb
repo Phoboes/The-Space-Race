@@ -79,6 +79,7 @@ app.createAlienGroupLeftRightLevelSeven = function(x, y, num, alienMove) {
         alien.anchor.setTo(0.5, 0.5);
         alien.body.moves = false;
         alienArray.push(alien);
+        app.aliensSpawned ++;
     }
 
     _.each(alienArray, function(alien){
@@ -238,6 +239,7 @@ app.createSmallRightLevelSeven = function(lastAlien) {
             var alien = alienInfo.create(x * 50, 0, 'levelSevenAsteroidSmall');
             alien.animations.add('colour', [ 0, 1, 2, 3, 4 ], 20, true);
             alien.frame = _.random(0,4);
+            app.aliensSpawned ++;
         }
     }
     alienInfo.x = currentXPos - 40;
@@ -263,6 +265,7 @@ app.createSmallLeftLevelSeven = function(lastAlien) {
             var alien = alienInfo.create(x * 50, 0, 'levelSevenAsteroidSmall');
             alien.animations.add('colour', [ 0, 1, 2, 3, 4 ], 20, true);
             alien.frame = _.random(0,4);
+            app.aliensSpawned ++;
         }
     }
     alienInfo.x = currentXPos - 40;
@@ -287,6 +290,7 @@ app.createSmallDownLevelSeven = function(lastAlien) {
             var alien = alienInfo.create(x * 50, 0, 'levelSevenAsteroidSmall');
             alien.animations.add('colour', [ 0, 1, 2, 3, 4 ], 20, true);
             alien.frame = _.random(0,4);
+            app.aliensSpawned ++;
         }
     }
     alienInfo.x = currentXPos - 40;
@@ -314,6 +318,7 @@ app.createSmallUpLevelSeven = function(lastAlien) {
             var alien = alienInfo.create(x * 50, 0, 'levelSevenAsteroidSmall');
             alien.animations.add('colour', [ 0, 1, 2, 3, 4 ], 20, true);
             alien.frame = _.random(0,4);
+            app.aliensSpawned ++;
         }
     }
     alienInfo.x = currentXPos - 40;

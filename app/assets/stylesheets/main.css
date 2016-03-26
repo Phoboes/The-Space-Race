@@ -21,13 +21,11 @@ button {
   width: 80px;
 }
 
-/*----------------------------------------------Forms----------------------------------------------*/
+/*----------------------------------------------Scorelists etc----------------------------------------------*/
 
-.formContain {
-  margin: 2px 1px 1px 800px;
-  width: 300px;
-  position: absolute;
-  text-align: center;
+.scoreList {
+  border: 1px solid black;
+  float: right;
   display: inline-block;
 }
 
@@ -54,6 +52,17 @@ button {
 
 .gameLives{
   float: right;
+}
+
+.formTab {
+  width: 100px;
+  height: 20px;
+  border: 1px solid green;
+  float: right;
+}
+
+#score_highscore {
+  display: none;
 }
 
  /*----------------------------------------------Buttons----------------------------------------------*/
@@ -99,3 +108,5 @@ button:hover, button:active, button:focus {
 .userButton p:hover {
   color: grey;
 }
+
+

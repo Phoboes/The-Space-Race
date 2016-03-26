@@ -50,8 +50,8 @@ app.createAlienGroupTopBottomLevelEight = function(x, y, num, alienMove) {
         alien.anchor.setTo(0.5, 0.5);
         alien.animations.add('fly', [ 0, 1, 2 ], 20, true);
         alien.play('fly');
-        //alien.body.moves = false;
         alienArray.push(alien);
+        app.aliensSpawned ++;
     }
 
     _.each(alienArray, function(alien){
@@ -86,6 +86,7 @@ app.createAlienGroupLeftRightLevelEight = function(x, y, num, alienMove) {
         alien.play('fly');
         //alien.body.moves = false;
         alienArray.push(alien);
+        app.aliensSpawned ++;
     }
 
     _.each(alienArray, function(alien){

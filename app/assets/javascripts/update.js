@@ -294,6 +294,20 @@ app.update = function() {
 
         // SCORES AND LIVES: -KANE
 
+        (function(){
+            scoreEvaluation();
+            $('#score_highscore').val(app.score);
+
+            if( app.scoreLeading ){
+                console.log("Leading!")
+                $('#score_highscore').toggle()
+            }
+
+            
+
+
+        })();
+
         $('.gameLives').text( "Lives: "+lifeCalculator() );
         $('.gameScore').text("Score: "+app.score)
 

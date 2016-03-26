@@ -4,7 +4,7 @@ class CreateScores < ActiveRecord::Migration
 
       t.timestamps null: false
       t.text :name
-      t.integer :score
+      t.integer :highscore
     end
   end
 end

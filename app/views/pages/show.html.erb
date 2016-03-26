@@ -6,5 +6,16 @@
  </head>
  <body>
 
+<div class="formTab">
+  
+<%= form_for(@score, remote: true) do |f| %>
+  <%= f.label :name %>:
+  <%= f.text_field :name, {:maxlength => 12} %>
+  <%= f.number_field :highscore %>
+  <%= f.submit "Create" %>
+<% end %>
+
+</div>
+
  </body>
 </html>

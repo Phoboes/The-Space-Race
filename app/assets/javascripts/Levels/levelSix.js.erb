@@ -43,6 +43,7 @@ app.createAlienGroupTopBottomLevelSix = function(x, y, num, alienMove) {
         alien.play('fly');
         alien.body.moves = false;
         alienArray.push(alien);
+        app.aliensSpawned ++;
     }
 
     _.each(alienArray, function(alien){
@@ -67,6 +68,7 @@ app.createAlienGroupLeftRightLevelSix = function(x, y, num, alienMove) {
         alien.play('fly');
         alien.body.moves = false;
         alienArray.push(alien);
+        app.aliensSpawned ++;
     }
 
     _.each(alienArray, function(alien){
@@ -205,6 +207,7 @@ app.createSmallRightLevelSix = function(lastAlien) {
         for (var x = 0; x < 2; x++)
         {
             alienInfo.create(x * 50, 0, 'levelSixAsteroidSmall');
+            app.aliensSpawned ++;
         }
     }
     alienInfo.x = currentXPos - 40;
@@ -228,6 +231,7 @@ app.createSmallLeftLevelSix = function(lastAlien) {
         for (var x = 0; x < 2; x++)
         {
             alienInfo.create(x * 50, 0, 'levelSixAsteroidSmall');
+            app.aliensSpawned ++;
         }
     }
     alienInfo.x = currentXPos - 40;
@@ -250,6 +254,7 @@ app.createSmallDownLevelSix = function(lastAlien) {
         for (var x = 0; x < 2; x++)
         {
             alienInfo.create(x * 50, 0, 'levelSixAsteroidSmall');
+            app.aliensSpawned ++;
         }
     }
     alienInfo.x = currentXPos - 40;
@@ -275,6 +280,7 @@ app.createSmallUpLevelSix = function(lastAlien) {
         for (var x = 0; x < 2; x++)
         {
             alienInfo.create(x * 50, 0, 'levelSixAsteroidSmall');
+            app.aliensSpawned ++;
         }
     }
     alienInfo.x = currentXPos - 40;

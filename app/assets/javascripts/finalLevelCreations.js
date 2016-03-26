@@ -37,7 +37,8 @@ app.callTimer = function(type, graphic, num, X, Y, time){
 
       }
 
-      count += 1
+      app.aliensSpawned ++;
+      count += 1;
       if ( count === num ){
         app.generating = false
         clearInterval(waveGen);
@@ -199,6 +200,7 @@ app.createAlienMissileShip2 = function(X, Y, graphicName){
         shooterBullet.reset(alien.body.x + 15, alien.body.y +10);
         shooterBullet.angle = alien.angle;
         app.alienMissileArray.push(shooterBullet);
+        app.aliensSpawned ++;
 
         _.each(app.alienMissileArray, function(shooterBullet){
 

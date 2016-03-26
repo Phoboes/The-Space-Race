@@ -18,4 +18,5 @@
 //= require ./Resources/howler
 //= require ./audio
 //= require ./gui
+//= require ./scoreJS
 //= require_tree .

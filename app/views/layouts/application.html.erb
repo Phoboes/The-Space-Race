@@ -8,6 +8,10 @@
 </head>
 <body>
 <div id="container">
+    <div class="scoreList">
+    <% @scores.each do |s| %>
+    <p><%=s.name %>: <%= s.highscore %></p>
+    <% end %>
 </div>
 <%= yield %>
 

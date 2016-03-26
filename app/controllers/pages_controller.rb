@@ -1,4 +1,18 @@
 class PagesController < ApplicationController
+
   def show
+    @scores = Score.order(highscore: :desc).limit(5)
+        @score = Score.new
   end
+
+  def new
+    @score = Score.new
+  end
+
+  def score
+  end
+    #     require 'pry'
+    # binding.pry
+
 end
+
