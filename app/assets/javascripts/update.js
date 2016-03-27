@@ -297,15 +297,6 @@ app.update = function() {
         (function(){
             scoreEvaluation();
             $('#score_highscore').val(app.score);
-
-            if( app.scoreLeading ){
-                console.log("Leading!")
-                $('#score_highscore').toggle()
-            }
-
-            
-
-
         })();
 
         $('.gameLives').text( "Lives: "+lifeCalculator() );

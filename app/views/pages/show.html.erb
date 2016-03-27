@@ -7,7 +7,9 @@
  <body>
 
 <div class="formTab">
-  
+
+<h3>New Highscore!</h3>
+
 <%= form_for(@score, remote: true) do |f| %>
   <%= f.label :name %>:
   <%= f.text_field :name, {:maxlength => 12} %>

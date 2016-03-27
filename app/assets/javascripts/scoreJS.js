@@ -46,7 +46,6 @@ scoreEvaluation = function(){
 
   if( app.score === app.totalKillCount * 20 && app.score/20 === app.totalKillCount && app.totalKillCount <= app.aliensSpawned){
     app.score = app.totalKillCount * 20
-    scoreForm();
   } else {
       playerNuke();
     };
