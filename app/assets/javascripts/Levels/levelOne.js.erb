@@ -143,6 +143,17 @@ app.enemyHitsPlayerLevelOne = function(player,bullet) {
 
         //AUDIO - Game over -k
         app.playGameOverSound();
+
+
+    scoreForm();
+
+    if( app.scoreLeading ){
+        console.log("Leading!")
+        $('.formTab').toggle()
+    } else {
+        location.reload();
+    }
+        
     }
 
 }

@@ -3,15 +3,6 @@ var app = app || {};
 app.restart = function() {
     //  A new level starts
 
-    scoreForm();
-
-    if( app.scoreLeading ){
-        console.log("Leading!")
-        $('.formTab').toggle()
-    } else {
-        location.reload();
-    }
-
     app.levelCounter = 1;
 
     //resets the life count

@@ -1,8 +1,8 @@
 class ScoresController < ApplicationController
 
-  def new
-    @score = Scores.new
-  end
+  # def new
+  #   @score = Scores.new
+  # end
 
   def create
     @score = Score.new(score_params)
@@ -18,9 +18,6 @@ class ScoresController < ApplicationController
     end
   end
 
-
-
-
     @score.save
     redirect_to root_path
   end
@@ -31,7 +28,7 @@ class ScoresController < ApplicationController
 
 private
   def score_params
-    params.require(:score).permit(:name, :id, :highscore)
+    params.require(:score).permit(:name, :highscore)
   end
 
 end

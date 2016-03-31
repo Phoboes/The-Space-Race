@@ -109,6 +109,21 @@ app.preload = function() {
     $('<div class="gameStatus">'+'<p class="scoreText gameScore">'+app.score+'</p>'+'<p class="scoreText gameLives"> 3 </p>'+'</div>').appendTo('#container');
     $('<div class="optionsBar" style="height: 35px;"><div class="userButton toggleSound userButtonDisable"><p>Mute</p></div></div>').appendTo('.gameStatus');
     $('<div class="statsWindow hidden"><h4>Stats</h4></div>').appendTo('#container');
+    
+    (function(){
+        $('#new_score').submit(function(e){
+            setTimeout(function(){
+
+                (function(){
+                    scoreEvaluation();
+                    $('#score_highscore').val(app.score);
+                })();
+
+                location.reload();
+                
+            }, 500);
+        });
+    })();
 };
 
 app.render = function() {
