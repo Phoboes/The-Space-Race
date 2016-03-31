@@ -141,6 +141,7 @@ app.createTwo = function(lastAlien) {
         for (var x = 0; x < 2; x++)
         {
             alienInfo.create(x * 50, 0, 'invader');
+            app.aliensSpawned ++;
         }
     }
     alienInfo.x = currentXPos - 40;
