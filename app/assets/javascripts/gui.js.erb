@@ -103,7 +103,7 @@ app.$stylise = function(){
       "font-weight": "normal"
     })
     $('.gameWindow').css("border", "1px solid black")
-    $('.scoreText, h1, label, #user_nav, a').css({
+    $('.scoreText, h1, label, .formTab').css({
       "font-weight": "normal",
       "color": "black",
       "font-family": '"Courier new"'
@@ -117,23 +117,24 @@ app.$stylise = function(){
 
 
   if (app.levelCounter === 6){
-    $('.gameWindow').css("border", "3px solid white")
+    $('.gameWindow, .formTab').css("border", "3px solid white")
 
-    $('body').css('background-color', 'black')
+    $('body, .formTab').css('background-color', 'black')
 
     $('button, input').css({
       "border" : "1px solid white",
       "background-color" : "rgb(0,0,0)",
       "color" : "white"
     })
-    $('#user_nav, a').css("color", "white")
+    
+    $('.formTab').css("color", "white")
 
     $('.scoreText, h1, label').css('color', 'white')
 
   }
 
   if (app.levelCounter === 7){
-    $('.gameWindow').css("border", "5px solid blue")
+    $('.gameWindow, .formTab').css("border", "5px solid blue")
 
     $('button, input').css({
       "border" : "3px solid blue",
@@ -142,7 +143,7 @@ app.$stylise = function(){
       "font-weight" : "bold"
     })
 
-    $('#user_nav, a').css("color", "yellow")
+    $('.formTab').css("color", "yellow")
 
     $('.scoreText, h1, label').css({
       'color' : 'yellow',
@@ -158,7 +159,7 @@ app.$stylise = function(){
 
   if (app.levelCounter === 8){
 
-    $('.gameWindow').css("border", "3px solid white")
+    $('.gameWindow, .formTab').css("border", "3px solid white")
 
     $('button, input').css({
       "border" : "3px solid white",
@@ -167,7 +168,7 @@ app.$stylise = function(){
       "font-weight" : "bold"
     })
 
-    $('#user_nav, a').css("color", "white")
+    $('.formTab').css("color", "white")
 
     $('.scoreText').css({
       'color' : 'white',
