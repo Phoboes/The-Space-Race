@@ -10,5 +10,5 @@
 score1 = Score.create([{ name: "Jack & Joel", highscore: 1005 }])
 score2 = Score.create([{ name: "Kane", highscore: 1004 }])
 score3 = Score.create([{ name: "Loretta", highscore: 1003 }])
-score4 = Score.create([{ name: "Alex", highscore: 1 }])
-score5 = Score.create([{ name: "Keshan", highscore: 11 }])
+score4 = Score.create([{ name: "Alex", highscore: 1002 }])
+score5 = Score.create([{ name: "Keshan", highscore: 1001 }])
