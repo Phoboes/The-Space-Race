@@ -22,7 +22,7 @@ class ScoresController < ApplicationController
     redirect_to root_path
   end
 
-  def delete
+  def destroy
     @score = Score.find_by[:id].destroy
   end
 
