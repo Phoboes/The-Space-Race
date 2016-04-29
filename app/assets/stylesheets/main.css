@@ -7,6 +7,7 @@
 #container {
 padding-left: 200px;
 margin-top: 20px;
+min-width: 1000px;
 }
 
 .hidden {
@@ -66,7 +67,7 @@ button {
   background-color: white;
   display: none;
 }
-  
+
   form label {
     margin: auto;
   }
@@ -123,5 +124,3 @@ button:hover, button:active, button:focus {
 .userButton p:hover {
   color: grey;
 }
-
-

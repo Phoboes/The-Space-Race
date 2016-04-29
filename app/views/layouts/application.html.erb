@@ -10,7 +10,7 @@
 <div id="container">
     <div class="scoreList">
     <% @scores.each do |s| %>
-    <p><%=s.name %>: <%= s.highscore %></p>
+    <p class="scoreListText"><%=s.name %>: <%= s.highscore %></p>
     <% end %>
 </div>
 <%= yield %>

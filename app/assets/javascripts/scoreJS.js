@@ -19,7 +19,7 @@ var playerNuke = function(){
     app.player.kill();
             app.stateText.text="  CHEATER. \n RELOADING.";
             app.stateText.visible = true;
-            app.stateText.fill = '#ff0000';
+            app.stateText.fill = '#ff000';
         setTimeout(function(){
           location.reload();
         }, 3000);
@@ -53,5 +53,3 @@ scoreEvaluation = function(){
 
   // };
 }; // End score evaluation
-
-
