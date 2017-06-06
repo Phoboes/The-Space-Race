@@ -10,11 +10,11 @@ https://the-space-race.herokuapp.com/
 
 #### Preview:
 
-![l1](http://i.imgur.com/EPiZcgD.png)
-![l2](http://i.imgur.com/e5R7ngd.png)
-![l3](http://i.imgur.com/cVns1n4.png)
-![l4](http://i.imgur.com/0RPqb2G.png)
-![l5](http://i.imgur.com/QXqJROP.png)
-![l6](http://i.imgur.com/5GmZLqg.png)
-![l7](http://i.imgur.com/FiqlrKk.png)
-![l8](http://i.imgur.com/2UEKN8p.png)
+![l1](http://i.imgur.com/EPiZcgD.png =250x)
+![l2](http://i.imgur.com/e5R7ngd.png =250x)
+![l3](http://i.imgur.com/cVns1n4.png =250x)
+![l4](http://i.imgur.com/0RPqb2G.png =250x)
+![l5](http://i.imgur.com/QXqJROP.png =250x)
+![l6](http://i.imgur.com/5GmZLqg.png =250x)
+![l7](http://i.imgur.com/FiqlrKk.png =250x)
+![l8](http://i.imgur.com/2UEKN8p.png =250x)
